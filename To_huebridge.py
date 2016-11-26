@@ -22,5 +22,5 @@ class fireplace(object):
         if self.running:
             self.flicker()
             self.run()
-        return
+        return # :/
 
