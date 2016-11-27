@@ -6,12 +6,11 @@ import fireplace
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_HEAD(self):
-        """Should respond with whatever response a HTTP GET would respond with"""
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        self.send_header("Content-type", "application/json")
         self.end_headers()
 
-    def do_POST(self):
+    def do_PUT(self):
         my_path = urlparse.urlparse(self.path)
         if my_path.path == '/smarthome/fireplace/start':
             self.send_response(fireplace.start())

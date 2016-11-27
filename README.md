@@ -5,13 +5,13 @@ Custom smart home handlers
 
 ### Handlers
 
-####POST /smarthome/fireplace/start
+####PUT /smarthome/fireplace/start
 
 Turn the fireplace on
 
-**REQUEST BODY**: FireplaceState object (optional)
+**REQUEST BODY**: fireplace.__state object (optional)
 
-####POST /smarthome/fireplace/stop
+####PUT /smarthome/fireplace/stop
 
 Turn the fireplace off
 
@@ -21,10 +21,10 @@ Turn the fireplace off
 
 Get the state of the fireplace
 
-**REPOSONSE BODY**: FireplaceState object
+**REPOSONSE BODY**: fireplace.__state object
 
-####PUT /smarthome/fireplace
+####PATCH /smarthome/fireplace
 
 Update some values of the state of the fireplace
 
-**REQUEST BODY**: FireplaceState object (partial)
+**REQUEST BODY**: fireplace.__state (partial)
