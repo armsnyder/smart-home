@@ -51,6 +51,8 @@ def stop():
     """Stop the fireplace process"""
     # any variable that is SET in the method must be declared global
     global __running
+    if not __running:
+        return 400
     log.info('Stopping the fireplace')
     # set running state to false; the main process will halt after its current run loop
     __running = False
@@ -75,7 +77,7 @@ def __run():
         bri = random.randint(80, 255)
         hue = random.randint(2000, 11000)
         trans = random.randint(1, 25)
-        command = {'bri': bri, 'hue': hue, 'transitiontime': trans, 'sat': sat}
+        command = {'bri': bri, 'hue': hue, 'transitiontime': trans, 'sat': sat, 'on': True}
         __bridge.set_light(fireplace_id, command)
         # wait 4 seconds so we don't spam the system
         time.sleep(trans/10)
