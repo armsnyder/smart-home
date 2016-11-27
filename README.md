@@ -1,6 +1,15 @@
 # Smart Home
 Custom smart home handlers
 
+## Configuration
+
+Place a config.ini file in the project root directory to provide config values.
+
+```ini
+[server]
+port = <port>
+```
+
 ## Fireplace
 
 ### Handlers
