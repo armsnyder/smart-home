@@ -66,9 +66,17 @@ def stop():
 
 def __run():
     """The 'main loop' of the fireplace process"""
+    fireplace_id = int(__bridge.get_light_id_by_name('Fireplace'))
+    sat = 254
     while __running:
         log.debug('running')
         # for now, just to test, set light 6 to a random color
-        __bridge.set_light(6, 'hue', random.randint(0, 65535))
+        # __bridge.set_light(6, 'hue', random.randint(0, 65535))
+        bri = random.randint(80, 255)
+        hue = random.randint(2000, 11000)
+        trans = random.randint(1, 25)
+        command = {'bri': bri, 'hue': hue, 'transitiontime': trans, 'sat': sat}
+        __bridge.set_light(fireplace_id, command)
         # wait 4 seconds so we don't spam the system
-        time.sleep(4)
+        time.sleep(trans/10)
+    __bridge.set_light(fireplace_id, "on", False)
