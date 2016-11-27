@@ -1,4 +1,8 @@
 import threading
+import time
+import random
+
+import phue
 
 import log
 
@@ -13,6 +17,11 @@ __thread = None
 
 # time to wait for the fireplace thread to exit in the stop() method
 __TIMEOUT = 5.0  # seconds
+
+# get a connection to the Philips Hue Bridge
+# the phue library gets a username and ip from a config file located at $USER_HOME/.python_hue
+# that is why no ip or username is provided here
+__bridge = phue.Bridge()
 
 
 def start():
@@ -56,6 +65,10 @@ def stop():
 
 
 def __run():
-    """The "main loop" of the fireplace process"""
+    """The 'main loop' of the fireplace process"""
     while __running:
         log.debug('running')
+        # for now, just to test, set light 6 to a random color
+        __bridge.set_light(6, 'hue', random.randint(0, 65535))
+        # wait 4 seconds so we don't spam the system
+        time.sleep(4)
