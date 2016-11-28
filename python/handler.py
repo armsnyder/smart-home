@@ -21,6 +21,10 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(fireplace.stop())
             self.end_headers()
             return
+        elif my_path.path == '/smarthome/fireplace/feed':
+            self.send_response(fireplace.feed())
+            self.end_headers()
+            return
         else:
             self.send_response(404)
             self.end_headers()

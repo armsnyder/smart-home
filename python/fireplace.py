@@ -66,6 +66,12 @@ def stop():
     return 200  # HTTP status code: "OK"
 
 
+def feed():
+    """Feed the fire"""
+    # TODO: Do something with __state to increment the amount of fuel
+    return 501  # HTTP status code: "Not Implemented"
+
+
 def __run():
     """The 'main loop' of the fireplace process"""
     fireplace_id = int(__bridge.get_light_id_by_name('Fireplace'))
