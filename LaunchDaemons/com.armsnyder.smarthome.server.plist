@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>com.armsnyder.smarthome.server</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>python</string>
+            <string>/opt/armsnyder/smarthome/python/server.py</string>
+        </array>
+        <key>KeepAlive</key>
+        <true/>
+        <key>ThrottleInterval</key>
+        <integer>30</integer>
+        <key>StandardOutPath</key>
+        <string>/var/armsnyder/smarthome/server_out.log</string>
+        <key>StandardErrorPath</key>
+        <string>/var/armsnyder/smarthome/server_err.log</string>
+    </dict>
+</plist>

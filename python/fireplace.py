@@ -1,6 +1,6 @@
+import random
 import threading
 import time
-import random
 
 import phue
 
@@ -78,10 +78,7 @@ def __run():
         hue = random.randint(2000, 11000)
         trans = random.randint(1, 25)
         command = {'bri': bri, 'hue': hue, 'transitiontime': trans, 'sat': sat, 'on': True}
-        try:
-            __bridge.set_light(fireplace_id, command)
-        except phue.PhueRequestTimeout:
-            pass
+        __bridge.set_light(fireplace_id, command)
         # wait 4 seconds so we don't spam the system
         time.sleep(trans/10)
     __bridge.set_light(fireplace_id, "on", False)

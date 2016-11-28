@@ -1,14 +1,10 @@
 # Smart Home
 Custom smart home handlers
 
-## Configuration
+## Continuous Integration
 
-Place a config.ini file in the project root directory to provide config values.
-
-```ini
-[server]
-port = <port>
-```
+After it has been installed, the project will periodically check for updates from master and reboot the server with any 
+new changes.
 
 ## Fireplace
 

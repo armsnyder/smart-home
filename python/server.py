@@ -1,6 +1,7 @@
+import ConfigParser
 import SocketServer
 import atexit
-import ConfigParser
+import os
 
 import handler
 import log
@@ -12,8 +13,9 @@ DEFAULT_PORT = 8033
 
 def main():
     # check if there is a config file that specifies a port to serve on
+    config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.ini')
     config = ConfigParser.ConfigParser()
-    config.read('config.ini')
+    config.read(config_path)
     try:
         # if a config value for server port is found, use it
         selected_port = config.getint('server', 'port')
