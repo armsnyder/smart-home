@@ -31,9 +31,14 @@ catch
 # create a config file
 cat > python/config.ini << EOF
 [server]
-port = 8032
+http_port = 8032
+https_port = 4432
 EOF
 catch
+
+# generate ssl certificate
+mkdir python/ssl
+openssl req -batch -nodes -x509 -newkey rsa:2048 -keyout python/ssl/key.pem -out python/ssl/cert.pem -days 365
 
 # load the launchd daemons to start the service
 find "${daemon_path}" -name "${daemon_pattern}" -exec sudo launchctl load -w {} \;
