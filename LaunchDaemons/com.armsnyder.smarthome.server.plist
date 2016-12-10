@@ -6,7 +6,7 @@
         <string>com.armsnyder.smarthome.server</string>
         <key>ProgramArguments</key>
         <array>
-            <string>python</string>
+            <string>/usr/bin/python</string>
             <string>/opt/armsnyder/smarthome/python/server.py</string>
         </array>
         <key>KeepAlive</key>
@@ -17,5 +17,7 @@
         <string>/var/armsnyder/smarthome/server_out.log</string>
         <key>StandardErrorPath</key>
         <string>/var/armsnyder/smarthome/server_err.log</string>
+        <key>UserName</key>
+        <string>_smarthome</string>
     </dict>
 </plist>
