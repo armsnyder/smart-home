@@ -94,4 +94,4 @@ ENV/
 
 # local config overrides
 config.ini
-python/ssl/
+frontend/server/ssl/

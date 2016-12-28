@@ -4,7 +4,7 @@ import time
 
 import phue
 
-import log
+import frontend.log as log
 
 # internal state of the fireplace; the data model that drives the simulation
 __state = {}

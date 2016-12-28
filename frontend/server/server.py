@@ -3,11 +3,11 @@
 import ConfigParser
 import SocketServer
 import os
-import ssl
 import threading
+import ssl
 
 import handler
-import log
+import infrastructure.log
 
 # the default port differs from the actual port used in production so that the code can be tested
 # while the production server continues to run
@@ -40,20 +40,20 @@ def configure_ports():
         http_port = config.getint('server', 'http_port')
     except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
         # if no config exists, use the default port
-        log.warn('No config found. Using default http port.')
+        infrastructure.log.warn('No config found. Using default http port.')
     try:
         # if a config value for server port is found, use it
         https_port = config.getint('server', 'https_port')
     except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
         # if no config exists, use the default port
-        log.warn('No config found. Using default https port.')
+        infrastructure.log.warn('No config found. Using default https port.')
 
 
 def serve_http():
     # define a server that runs our handler
     httpd = SocketServer.TCPServer(("", http_port), handler.Handler)
     # start the server
-    log.info("Serving HTTP on port " + str(http_port))
+    infrastructure.log.info("Serving HTTP on port " + str(http_port))
     httpd.serve_forever()
 
 
@@ -66,10 +66,10 @@ def serve_https():
         httpsd.socket = ssl.wrap_socket(httpsd.socket, keyfile=os.path.join(root_path, 'ssl', 'key.pem'),
                                         certfile=os.path.join(root_path, 'ssl', 'cert.pem'), server_side=True)
     except IOError:
-        log.warn("No certificate found. Cannot serve HTTPS.")
+        infrastructure.log.warn("No certificate found. Cannot serve HTTPS.")
         return
     # start the server
-    log.info("Serving HTTPS on port " + str(https_port))
+    infrastructure.log.info("Serving HTTPS on port " + str(https_port))
     httpsd.serve_forever()
 
 

@@ -1,9 +1,10 @@
 import BaseHTTPServer
-import socket
 import json
+import re
+import socket
 
-import fireplace
-import google_agent
+import backend.fireplace
+import backend.agent_tony
 
 # Response code constants
 OK = 200
@@ -49,12 +50,21 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.close_connection = 1
 
     def handle_google(self):
+        match = re.search(r'agents/(\w+)', self.path)
+        if not match:
+            self.send_response(NOT_FOUND)
+            return
+        try:
+            agent_method = getattr(backend.google_agents, match.group(1))
+        except AttributeError:
+            self.send_response(NOT_FOUND)
+            return
         self.send_header('Google-Assistant-API-Version', 'v1')
         self.send_header('content-type', 'application/json')
         self.send_response(OK)
         self.end_headers()
         request_body = self.rfile.read(int(self.headers.getheader('content-length', 0)))
-        response_body = google_agent.handle(json.loads(request_body))
+        response_body = agent_method(json.loads(request_body))
         self.wfile.write(json.dumps(response_body))
 
     def handle_ifttt(self):
@@ -62,11 +72,11 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(OK)
         elif self.command == 'PUT':
             if 'fireplace/start' in self.path:
-                self.send_response(fireplace.start())
+                self.send_response(backend.fireplace.start())
             elif 'fireplace/stop' in self.path:
-                self.send_response(fireplace.stop())
+                self.send_response(backend.fireplace.stop())
             elif 'fireplace/feed' in self.path:
-                self.send_response(fireplace.feed())
+                self.send_response(backend.fireplace.feed())
             else:
                 self.send_response(NOT_FOUND)
         else:

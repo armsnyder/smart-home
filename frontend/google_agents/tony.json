@@ -1,0 +1,43 @@
+{
+  "versionLabel": "0.1.0-SNAPSHOT",
+  "agentInfo": {
+    "languageCode": "en-US",
+    "projectId": "tony",
+    "voiceName": "male_2"
+  },
+  "actions": [
+    {
+      "initialTrigger": {
+        "intent": "assistant.intent.action.MAIN"
+      },
+      "httpExecution": {
+        "url": "https://server.armsnyder.com:4433/smarthome/google/agents/tony"
+      }
+    },
+    {
+      "initialTrigger": {
+        "intent": "START_FIREPLACE",
+        "queryPatterns": [
+          {
+            "queryPattern": "put a fire on"
+          },
+          {
+            "queryPattern": "put on a fire"
+          },
+          {
+            "queryPattern": "start a fire"
+          },
+          {
+            "queryPattern": "turn on the fireplace"
+          },
+          {
+            "queryPattern": "turn the fireplace on"
+          }
+        ]
+      },
+      "httpExecution": {
+        "url": "https://server.armsnyder.com:4433/smarthome/google/agents/tony"
+      }
+    }
+  ]
+}
