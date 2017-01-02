@@ -37,11 +37,11 @@ catch
 # install python dependencies
 pip install --upgrade pip
 catch
-pip install -r python/requirements.txt
+pip install -r requirements.txt
 catch
 
 # copy launchd daemons
-cp -R LaunchDaemons/* "${daemon_path}"
+cp -R infrastructure/LaunchDaemons/* "${daemon_path}"
 catch
 
 # copy config file
