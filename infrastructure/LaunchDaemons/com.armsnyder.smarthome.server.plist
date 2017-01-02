@@ -4,11 +4,8 @@
     <dict>
         <key>Label</key>
         <string>com.armsnyder.smarthome.server</string>
-        <key>ProgramArguments</key>
-        <array>
-            <string>/usr/bin/python</string>
-            <string>/opt/armsnyder/smarthome/python/server.py</string>
-        </array>
+        <key>Program</key>
+        <string>/opt/armsnyder/smarthome/infrastructure/daemon_scripts/bootstrap.sh</string>
         <key>KeepAlive</key>
         <true/>
         <key>ThrottleInterval</key>

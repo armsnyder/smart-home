@@ -5,7 +5,7 @@
         <key>Label</key>
         <string>com.armsnyder.smarthome.keepupdated</string>
         <key>Program</key>
-        <string>/opt/armsnyder/smarthome/bash/keepupdated.sh</string>
+        <string>/opt/armsnyder/smarthome/infrastructure/daemon_scripts/keepupdated.sh</string>
         <key>StartInterval</key>
         <integer>60</integer>
         <key>StandardOutPath</key>
