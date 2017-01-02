@@ -31,7 +31,7 @@ git clone "${remote_repo}" "${install_path}"
 catch
 
 # render the config variables into the files
-python infrastructure/install_scripts/render.py -rf -x .git,tests . config.ini
+sudo python infrastructure/install_scripts/render.py -rf -x .git,tests . config.ini
 catch
 
 # install python dependencies
