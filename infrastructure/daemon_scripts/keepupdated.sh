@@ -18,6 +18,9 @@ if [ ! ${local_sha} = ${remote_sha} ]; then
     # update all files to match remote master
     git reset --hard origin/master
     catch
+    # render the config variables into the files
+    python infrastructure/install_scripts/render.py -rf -x .git,tests . config.ini
+    catch
     # get the process ID of the running server
     pid=$(sudo launchctl list | grep "com.armsnyder.smarthome.server" | awk '{print $1}')
     catch
@@ -25,4 +28,5 @@ if [ ! ${local_sha} = ${remote_sha} ]; then
     [[ "${pid}" = "-" ]] || kill ${pid}
     catch
     echo "Loaded latest version ${remote_sha}"
+
 fi

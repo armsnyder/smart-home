@@ -1,4 +1,6 @@
-"""Wrappers around the built-in print() method that splits printing into different logging levels"""
+"""
+Wrappers around the built-in print() method that splits printing into different logging levels
+"""
 
 # levels can be activated and deactivated independently so that only certain messages are logged
 levels = {

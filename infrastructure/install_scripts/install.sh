@@ -17,6 +17,9 @@ daemon_pattern="com.armsnyder.smarthome.*"
 remote_repo="https://github.com/armsnyder/smart-home.git"
 username=_smarthome
 
+# get source path
+source_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
+
 # create install directory
 mkdir -p "${install_path}"
 catch
@@ -27,41 +30,55 @@ catch
 git clone "${remote_repo}" "${install_path}"
 catch
 
+# render the config variables into the files
+python infrastructure/install_scripts/render.py -rf -x .git,tests . config.ini
+catch
+
 # install python dependencies
 pip install --upgrade pip
 catch
-pip install -r python/requirements.txt
+pip install -r requirements.txt
 catch
 
 # copy launchd daemons
-cp -R LaunchDaemons/* "${daemon_path}"
+cp -R infrastructure/LaunchDaemons/* "${daemon_path}"
 catch
 
-# create a config file
-cat > python/config.ini << EOF
-[server]
-http_port = 8032
-https_port = 4432
-EOF
+# copy config file
+cp "${source_path}/config.ini" config.ini
+catch
+
+# copy google agent creds file
+cp "${source_path}/creds.data" creds.data
 catch
 
 # generate ssl certificate
-mkdir python/ssl
-openssl req -batch -nodes -x509 -newkey rsa:2048 -keyout python/ssl/key.pem -out python/ssl/cert.pem -days 365
+ssl_path="${install_path}/frontend/ssl"
+mkdir ${ssl_path}
+catch
+openssl req -batch -nodes -x509 -newkey rsa:2048 -keyout ${ssl_path}/key.pem -out ${ssl_path}/cert.pem -days 365
+catch
 
 # create daemon user account
 dscl . -create /Groups/${username}
+catch
 dscl . -append /Groups/${username} PrimaryGroupID 332
+catch
 dscl . -create /Users/${username}
+catch
 dscl . -append /Users/${username} UniqueID 332
+catch
 dscl . -append /Users/${username} PrimaryGroupID 332
+catch
 
 # restrict files to daemon
 chown -R ${username}:${username} ${install_path}
+catch
 
 # grant permission to log files
 mkdir -p "${log_path}" 2>/dev/null
 chown -R ${username}:${username} ${log_path}
+catch
 
 # load the launchd daemons to start the service
 find "${daemon_path}" -name "${daemon_pattern}" -exec sudo launchctl load -w {} \;

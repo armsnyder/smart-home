@@ -1,13 +1,17 @@
-#!/usr/bin/env python
+"""
+Opens a server for HTTP and HTTPS traffic. The HTTP request handling happens in the handler.py module.
+"""
 
 import ConfigParser
 import SocketServer
 import os
 import ssl
 import threading
+import inspect
 
 import handler
-import log
+from backend.config import config
+from backend import log
 
 # the default port differs from the actual port used in production so that the code can be tested
 # while the production server continues to run
@@ -18,23 +22,21 @@ https_port = 4433
 def main():
     # read ports from config file, if it exists
     configure_ports()
-    # start the servers
+    # start serving both http and https simultaneously
     http_thread = threading.Thread(target=serve_http)
     https_thread = threading.Thread(target=serve_https)
     http_thread.start()
     https_thread.start()
-    # block until both servers are down
+    # wait until both servers are down before exiting
     http_thread.join()
     https_thread.join()
 
 
 def configure_ports():
+    """
+    Configure the HTTP and HTTPS ports if they are defined in a config.ini
+    """
     global http_port, https_port
-    # check if there is a config file that specifies a port to serve on
-    root_path = os.path.dirname(os.path.realpath(__file__))
-    config_path = os.path.join(root_path, 'config.ini')
-    config = ConfigParser.ConfigParser()
-    config.read(config_path)
     try:
         # if a config value for server port is found, use it
         http_port = config.getint('server', 'http_port')
@@ -50,6 +52,10 @@ def configure_ports():
 
 
 def serve_http():
+    """
+    Bind our handler to a basic HTTP socket and begin serving traffic to it. This method blocks execution until the
+    server is shutdown, so it should be called asynchronously as a new process.
+    """
     # define a server that runs our handler
     httpd = SocketServer.TCPServer(("", http_port), handler.Handler)
     # start the server
@@ -58,11 +64,17 @@ def serve_http():
 
 
 def serve_https():
+    """
+    Bind our handler to a secure HTTPS socket and begin serving traffic to it. This method blocks execution until the
+    server is shutdown, so it should be called asynchronously as a new process.
+    """
     # define a server that runs our handler
     httpsd = SocketServer.TCPServer(("", https_port), handler.Handler)
     # wrap https socket in ssl
     try:
-        root_path = os.path.dirname(os.path.realpath(__file__))
+        # find the system path of the script
+        root_path = os.path.realpath(os.path.abspath(os.path.dirname(inspect.getfile(inspect.currentframe()))))
+        # look for ssl keys in a ssl directory, relative to this script, and use them to secure the socket
         httpsd.socket = ssl.wrap_socket(httpsd.socket, keyfile=os.path.join(root_path, 'ssl', 'key.pem'),
                                         certfile=os.path.join(root_path, 'ssl', 'cert.pem'), server_side=True)
     except IOError:

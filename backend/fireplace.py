@@ -1,3 +1,7 @@
+"""
+Houses all fireplace-related code. Exposes functions for external handlers to change the state of the fireplace.
+"""
+
 import random
 import threading
 import time
@@ -5,6 +9,8 @@ import time
 import phue
 
 import log
+from config import config
+
 
 # internal state of the fireplace; the data model that drives the simulation
 __state = {}
@@ -19,9 +25,10 @@ __thread = None
 __TIMEOUT = 5.0  # seconds
 
 # get a connection to the Philips Hue Bridge
-# the phue library gets a username and ip from a config file located at $USER_HOME/.python_hue
-# that is why no ip or username is provided here
-__bridge = phue.Bridge()
+# use an ip and username specified in the config file
+ip = config.get('hue', 'ip')
+username = config.get('hue', 'username')
+__bridge = phue.Bridge(ip, username)
 
 
 def start():
