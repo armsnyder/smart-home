@@ -10,4 +10,13 @@ def respond_to_request(request_json):
     :param request_json: A request object containing information about the voice command issued
     :return: A compliant dictionary to return to the google frontend containing text for the assistant to speak
     """
-    pass
+    # Example response that echos the user request text
+    return {
+        "conversation_token": "42",
+        "expect_user_response": False,
+        "final_response": {
+            "speech_response": {
+                "text_to_speech": request_json['inputs']['raw_inputs'][0]['query']
+            }
+        }
+    }
